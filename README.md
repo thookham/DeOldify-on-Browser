@@ -10,8 +10,8 @@ This repository demonstrates web-based implementation of <a href="https://github
 
 ### **Instructions**
 To use a DeOldify example, copy the corresponding html file contents. To dowload and locally serve models download them from the link provided:
-1. Original artistic model: https://cdn.glitch.me/2046b88b-673a-457f-b1b8-7169ce9bf13a/deoldify-art.onnx (~243mb)
-2. Quantized model: https://cdn.glitch.me/2046b88b-673a-457f-b1b8-7169ce9bf13a/deoldify-quant.onnx (~61mb)
+1. Original artistic model: https://huggingface.co/thookham/DeOldify-on-Browser/resolve/main/deoldify-art.onnx (~243mb)
+2. Quantized model: https://huggingface.co/thookham/DeOldify-on-Browser/resolve/main/deoldify-quant.onnx (~61mb)
 
 
 ### **Onnx files and Quantization**
