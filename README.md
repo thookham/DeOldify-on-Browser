@@ -203,6 +203,22 @@ Contributions welcome! Ideas for improvements:
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) (when available) for guidelines.
 
+See [CONTRIBUTING.md](CONTRIBUTING.md) (when available) for guidelines.
+
+---
+
+## 💡 Golden Nuggets & Best Practices
+
+Based on extensive community research, here are some key insights for getting the best results with DeOldify:
+
+### 1. Video Colorization & Flicker
+*   **Current State**: This browser version currently supports **Images Only**.
+*   **For Video**: If you want to colorize video, you **MUST** use the [Desktop DeOldify](https://github.com/thookham/DeOldify) repository.
+*   **Stability Secret**: The desktop version includes a specific **"Video" Model** trained with **NoGAN** to eliminate flicker. Using the "Artistic" model (used here) on video frames will result in significant flickering.
+
+### 2. The "NoGAN" Advantage
+DeOldify's secret sauce is **NoGAN** training. It combines the realism of GANs with the stability of conventional training. This is why the images look so good without the common artifacts found in other GAN-based colorizers.
+
 ---
 
 ## 📝 Credits & License
