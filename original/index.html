@@ -24,6 +24,32 @@
             align-items: center;
             gap: 20px;
         }
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DeOldify Artistic (Browser)</title>
+    <script src="https://cdn.jsdelivr.net/npm/onnxruntime-web/dist/ort.min.js"></script>
+    <style>
+        body {
+            font-family: sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
 
         canvas {
             border: 1px solid #ccc;
@@ -38,6 +64,63 @@
             font-weight: bold;
             margin-top: 10px;
         }
+
+        /* Slider CSS */
+        .comparison-container {
+            position: relative;
+            display: none; /* Hidden until image loaded */
+            cursor: ew-resize;
+            margin-top: 20px;
+            overflow: hidden;
+        }
+
+        .comparison-container img, 
+        .comparison-container canvas {
+            display: block;
+            width: 100%;
+            height: auto;
+            user-select: none;
+        }
+
+        .comparison-container canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            /* Clip path will be set by JS */
+        }
+
+        .slider-handle {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: white;
+            box-shadow: 0 0 5px rgba(0,0,0,0.5);
+            left: 50%;
+            pointer-events: none; /* Let clicks pass through to container */
+            z-index: 10;
+        }
+
+        .slider-button {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 30px;
+            height: 30px;
+            background: white;
+            border-radius: 50%;
+            box-shadow: 0 0 5px rgba(0,0,0,0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .slider-button::after {
+            content: '↔';
+            color: #333;
+            font-weight: bold;
+        }
     </style>
 </head>
 
@@ -48,7 +131,14 @@
             <input type="file" id="imageInput" accept="image/*" />
         </div>
         <div id="status">Select an image to start...</div>
-        <canvas id="outputCanvas"></canvas>
+        
+        <div class="comparison-container" id="comparisonContainer">
+            <img id="originalImage" alt="Original Black & White" />
+            <canvas id="outputCanvas"></canvas>
+            <div class="slider-handle" id="sliderHandle">
+                <div class="slider-button"></div>
+            </div>
+        </div>
     </div>
 
     <script>
@@ -191,6 +281,13 @@
 
             image.onload = async function () {
                 document.getElementById('status').innerText = "Processing...";
+                
+                // Setup comparison container
+                const container = document.getElementById('comparisonContainer');
+                const originalImg = document.getElementById('originalImage');
+                originalImg.src = objectUrl;
+                container.style.display = 'block';
+                container.style.maxWidth = image.width + "px"; // Limit container width
 
                 // Pre-processing canvas (256x256)
                 let canvas = document.createElement("canvas");
@@ -228,20 +325,73 @@
                     // Resize to original
                     outCtx.drawImage(tempCanvas, 0, 0, image.width, image.height);
 
-                    document.getElementById('status').innerText = "Done!";
+                    document.getElementById('status').innerText = "Done! Drag slider to compare.";
+                    
+                    // Initialize slider
+                    initSlider();
+                    
                 } catch (err) {
                     document.getElementById('status').innerText = "Error processing: " + err.message;
                     console.error(err);
                 } finally {
                     // Clean up memory
-                    URL.revokeObjectURL(objectUrl);
+                    // URL.revokeObjectURL(objectUrl); // Keep it for the img tag
                 }
             };
         });
+
+        function initSlider() {
+            const container = document.getElementById('comparisonContainer');
+            const canvas = document.getElementById('outputCanvas');
+            const handle = document.getElementById('sliderHandle');
+            
+            let isDragging = false;
+
+            function updateSlider(x) {
+                const rect = container.getBoundingClientRect();
+                let percentage = ((x - rect.left) / rect.width) * 100;
+                
+                // Clamp
+                if (percentage < 0) percentage = 0;
+                if (percentage > 100) percentage = 100;
+
+                handle.style.left = percentage + "%";
+                // Clip the canvas (colorized image) to reveal original below
+                // Actually, we want colorized on top, and clip it to show original?
+                // Or original on bottom, colorized on top.
+                // If we clip-path the top (canvas), we show the bottom (img).
+                // Let's say left side is Colorized, right side is Original.
+                // Then clip-path: inset(0 0 0 percentage%); -> No, that hides left.
+                // clip-path: inset(0 calc(100% - percentage%) 0 0); -> Shows left 'percentage' amount.
+                canvas.style.clipPath = `inset(0 ${100 - percentage}% 0 0)`;
+            }
+            
+            // Set initial state (50%)
+            updateSlider(container.getBoundingClientRect().left + container.getBoundingClientRect().width / 2);
+
+            container.addEventListener('mousedown', () => isDragging = true);
+            window.addEventListener('mouseup', () => isDragging = false);
+            window.addEventListener('mousemove', (e) => {
+                if (!isDragging) return;
+                updateSlider(e.clientX);
+            });
+            
+            // Touch support
+            container.addEventListener('touchstart', () => isDragging = true);
+            window.addEventListener('touchend', () => isDragging = false);
+            window.addEventListener('touchmove', (e) => {
+                if (!isDragging) return;
+                updateSlider(e.touches[0].clientX);
+            });
+            
+            // Click to jump
+            container.addEventListener('click', (e) => {
+                updateSlider(e.clientX);
+            });
+        }
 
         // Start loading immediately
         init();
     </script>
 </body>
-
 </html>
