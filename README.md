@@ -59,12 +59,14 @@ Visit **[deoldify.glitch.me](https://deoldify.glitch.me/)** to try it instantly!
 ### Option 2: Run Locally
 
 1. **Clone the repository**:
+
    ```bash
    git clone https://github.com/thookham/DeOldify-on-Browser.git
    cd DeOldify-on-Browser
    ```
 
 2. **Serve locally** (models load from Hugging Face):
+
    ```powershell
    # Using PowerShell
    .\serve.ps1
@@ -171,13 +173,16 @@ Want to quantize your own ONNX models? See our [Technical Guide](TECHNICAL.md) (
 
 1. **Upload to Google Colab**: Original ONNX model
 2. **Run preprocessing**:
+
    ```python
    !pip install onnxruntime onnx
    !python -m onnxruntime.quantization.preprocess \
      --input deoldify.onnx \
      --output deoldify-preprocessed.onnx
    ```
+
 3. **Quantize**:
+
    ```python
    from onnxruntime.quantization import quantize_dynamic, QuantType
    quantize_dynamic(
@@ -212,11 +217,13 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) (when available) for guidelines.
 Based on extensive community research, here are some key insights for getting the best results with DeOldify:
 
 ### 1. Video Colorization & Flicker
-*   **Current State**: This browser version currently supports **Images Only**.
-*   **For Video**: If you want to colorize video, you **MUST** use the [Desktop DeOldify](https://github.com/thookham/DeOldify) repository.
-*   **Stability Secret**: The desktop version includes a specific **"Video" Model** trained with **NoGAN** to eliminate flicker. Using the "Artistic" model (used here) on video frames will result in significant flickering.
+
+* **Current State**: This browser version currently supports **Images Only**.
+- **For Video**: If you want to colorize video, you **MUST** use the [Desktop DeOldify](https://github.com/thookham/DeOldify) repository.
+- **Stability Secret**: The desktop version includes a specific **"Video" Model** trained with **NoGAN** to eliminate flicker. Using the "Artistic" model (used here) on video frames will result in significant flickering.
 
 ### 2. The "NoGAN" Advantage
+
 DeOldify's secret sauce is **NoGAN** training. It combines the realism of GANs with the stability of conventional training. This is why the images look so good without the common artifacts found in other GAN-based colorizers.
 
 ---
@@ -243,6 +250,15 @@ MIT License - see [LICENSE](LICENSE) for details.
 - **[DeOldify Original](https://github.com/jantic/DeOldify)**: Original research project
 - **[ONNX.js](https://github.com/microsoft/onnxjs)**: JavaScript ML runtime
 
+### Model Repositories (Hugging Face)
+
+| Repository | Models | Use Case |
+|------------|--------|----------|
+| [thookham/DeOldify-on-Browser](https://huggingface.co/thookham/DeOldify-on-Browser) | ONNX only | Browser deployment |
+| [thookham/DeOldify](https://huggingface.co/thookham/DeOldify) | PyTorch + ONNX | Training & Inference |
+
+> **Note**: This repository syncs to HuggingFace automatically on push to main.
+
 ---
 
 ## 📞 Support
@@ -260,4 +276,3 @@ MIT License - see [LICENSE](LICENSE) for details.
 Bringing color to history, one photo at a time 🎨
 
 </div>
- 
