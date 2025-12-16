@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DeOldify Browser | AI Colorization</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <!-- Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- ONNX Runtime -->
+    <script src="https://cdn.jsdelivr.net/npm/onnxruntime-web@1.14.0/dist/ort.min.js"></script>
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+    
+    <div class="container">
+        <header>
+            <h1>DeOldify Browser</h1>
+            <p class="subtitle">Restore. Colorize. Revive. 100% Private & Client-Side.</p>
+        </header>
+
+        <div class="glass-panel controls-area">
+            <div class="model-selector">
+                <div class="model-option active" data-model="artistic">
+                    <i class="fas fa-palette"></i>
+                    <span>Artistic (Best Quality)</span>
+                </div>
+                <div class="model-option" data-model="quantized">
+                    <i class="fas fa-bolt"></i>
+                    <span>Quantized (Fastest)</span>
+                </div>
+            </div>
+
+            <div class="drop-zone" id="dropZone">
+                <div class="drop-icon">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                </div>
+                <h3>Drag & Drop your B&W Photo</h3>
+                <p>or click to browse</p>
+                <input type="file" id="fileInput" class="hidden-input" accept="image/png, image/jpeg, image/webp">
+            </div>
+
+            <div class="status" id="statusText">Ready to colorize</div>
+            <div class="progress-bar" id="progressBar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+        </div>
+
+        <div class="canvas-container" id="resultContainer">
+            <img id="originalImage" alt="Original" draggable="false">
+            <canvas id="outputCanvas"></canvas>
+            <div class="slider-handle" id="sliderHandle">
+                <div class="slider-knob">
+                    <i class="fas fa-arrows-alt-h"></i>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>Powered by <a href="https://github.com/jantic/DeOldify" target="_blank">DeOldify</a> & <a href="https://onnxruntime.ai/" target="_blank">ONNX Runtime</a>. 
+            Maintained by <a href="https://github.com/thookham" target="_blank">thookham</a>.</p>
+        </footer>
+    </div>
+
+    <script src="assets/js/app.js" type="module"></script>
+</body>
+</html>

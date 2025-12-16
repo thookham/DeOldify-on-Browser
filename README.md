@@ -179,16 +179,17 @@ User Upload → Preprocessing → ONNX Runtime → Postprocessing → Display
 
 ```
 DeOldify-on-Browser/
-├── original/
-│   └── index.html          ← Artistic model (243 MB)
-├── quantized/
-│   └── index.html          ← Quantized model (61 MB)
-├── img/
-│   └── screenshot.jpg      ← Demo screenshot
+├── assets/                 ← App resources
+│   ├── css/                ← Styling (Glassmorphism)
+│   ├── js/                 ← Javascript logic & workers
+│   └── models/             ← Cached models
+├── img/                    ← Images
 ├── serve.ps1               ← Windows helper script
 ├── LICENSE                 ← MIT License
 ├── README.md               ← This file
-└── ROADMAP.md              ← Feature roadmap
+├── ROADMAP.md              ← Feature roadmap
+├── index.html              ← Main Application
+└── CHANGELOG.md            ← Version history
 ```
 
 ---
